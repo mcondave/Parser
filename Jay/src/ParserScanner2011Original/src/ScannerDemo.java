@@ -8,7 +8,7 @@ package ParserScanner2011Original.src;
  */
 public class ScannerDemo {
 
-	private static String file1 = "C:\\Users\\Mike\\Documents\\Mike\\CS361\\JAY\\Jay\\bin\\GIVEN\\PARSER\\prog2.JAY"; 
+	private static String file1 = "C:\\Users\\mcon\\Documents\\Mike\\Parser\\Jay\\bin\\GIVEN\\PARSER\\prog2.JAY"; 
 	private static int counter = 1;
 	private static Token t;
 

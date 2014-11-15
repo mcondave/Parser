@@ -7,6 +7,6 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ParserScanner2011Original.src.ParserDemo"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="C:\Users\Mike\Documents\Mike\CS361\JAY\Jay\\bin\GIVEN\PARSER\prog2.JAY&#13;&#10;C:\Users\Mike\Documents\Mike\CS361\JAY\Jay\\bin\GIVEN\PARSER\prog3.JAY&#13;&#10;C:\Users\Mike\Documents\Mike\CS361\JAY\Jay\\bin\GIVEN\PARSER\prog4.JAY&#13;&#10;C:\Users\Mike\Documents\Mike\CS361\JAY\Jay\\bin\GIVEN\PARSER\prog5.JAY&#13;&#10;C:\Users\Mike\Documents\Mike\CS361\JAY\Jay\\bin\GIVEN\PARSER\prog6.JAY&#13;&#10;C:\Users\Mike\Documents\Mike\CS361\JAY\Jay\\bin\GIVEN\PARSER\prog7.JAY&#13;&#10;C:\Users\Mike\Documents\Mike\CS361\JAY\Jay\\bin\GIVEN\PARSER\test.JAY"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="C:\Users\mcon\Documents\Mike\Parser\Jay\bin\GIVEN\PARSER\prog2.JAY"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Jay"/>
 </launchConfiguration>

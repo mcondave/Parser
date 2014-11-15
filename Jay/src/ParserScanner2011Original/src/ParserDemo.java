@@ -5,7 +5,7 @@ public class ParserDemo {
 	public static void main(String[] args) {
 		
 		//lexical analysis
-		TokenStream tStream = new TokenStream(args[6]);
+		TokenStream tStream = new TokenStream(args[0]);
 		System.out.println("test1");
 		//syntactical analysis
 		ConcreteSyntax cSyntax = new ConcreteSyntax(tStream);
