@@ -60,11 +60,14 @@ public class ConcreteSyntax {
 		return p;
 	}
 
+	// Set token.equals(double)
 	private Declarations declarations() {
 		// Declarations --> { Declaration }*
+		// add double support to assignments
 		Declarations ds = new Declarations();
 		while (token.getValue().equals("int")
-				|| token.getValue().equals("boolean")) {
+				|| token.getValue().equals("boolean")
+				|| token.getValue().equals("double")) {
 			declaration(ds);
 		}
 		return ds;
@@ -79,10 +82,13 @@ public class ConcreteSyntax {
 
 	private Type type() {
 		// Type --> int | bool
+		// Add double
 		Type t = null;
 		if (token.getValue().equals("int"))
 			t = new Type(token.getValue());
 		else if (token.getValue().equals("boolean"))
+			t = new Type(token.getValue());
+		else if (token.getValue().equals("double"))
 			t = new Type(token.getValue());
 		else
 			throw new RuntimeException(SyntaxError("int | boolean"));
@@ -275,6 +281,8 @@ public class ConcreteSyntax {
 				v = new Value(true);
 			else if (token.getValue().equals("false"))
 				v = new Value(false);
+			else if (isDouble(token.getValue()))
+				v = new Value((new Double(token.getValue())).doubleValue());
 			else
 				throw new RuntimeException(SyntaxError("Literal"));
 			e = v;
@@ -324,6 +332,27 @@ public class ConcreteSyntax {
 		for (int i = 0; i < s.length(); i++)
 			if ('0' > s.charAt(i) || '9' < s.charAt(i))
 				result = false;
+		return result;
+	}
+	
+	private boolean isDouble(String s) {
+		boolean result = true;
+		boolean point = false;
+		for (int i = 0; i < s.length(); i++) {
+			if ('0' > s.charAt(i) || '9' < s.charAt(i))
+				result = false;
+			// If we see the decimal point, we'll set the flag to true
+			// If we see a decimal point and the flag is already true, then whoever wrote the code screwed up
+			// If the input is something like ".023" we'll return false. We want the form "0.023"
+			// We have to set result to true when we see the decimal point because it will set result to false by violating the above if statement
+			if ('.' == s.charAt(i) && point == false && i != 0) { 
+				point = true;
+				result = true;
+			} else if ('.' == s.charAt(i) && ( point == true || i == 0 )){
+				result = false;
+			}
+			System.out.println("Result: " + result);
+		}
 		return result;
 	}
 }

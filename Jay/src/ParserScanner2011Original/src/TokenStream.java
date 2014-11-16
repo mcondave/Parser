@@ -158,7 +158,11 @@ public class TokenStream {
  
 		if (isDigit(nextChar)) { // check for integers
 			t.setType("Literal");
-			while (isDigit(nextChar)) {
+			boolean point = false;
+			while (isDigit(nextChar) || (nextChar == '.' && point == false)) {
+				if (nextChar == '.') {
+					point = true;
+				}
 				t.setValue(t.getValue() + nextChar);
 				nextChar = readChar();
 			}
@@ -224,12 +228,10 @@ public class TokenStream {
 	}
  
 	private boolean isWhiteSpace(char c) {
-		//System.out.println("We have white space - skipping!");
 		return (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\f');
 	}
  
 	private boolean isEndOfLine(char c) {
-		//System.out.println("We have end of line - skipping!");
 		return (c == '\r' || c == '\n' || c == '\f');
 	}
  

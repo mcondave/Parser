@@ -76,12 +76,13 @@ class Declaration {
 }
 
 class Type {
-	// Type = int | bool | undef
+	// Type = int | bool | undef | double
 
 	public String id;
 
 	final static String INTEGER = "int";
 	final static String BOOLEAN = "bool";
+	final static String DOUBLE = "double";
 	final static String UNDEFINED = "undef";
 
 	public Type(String t) {
@@ -94,6 +95,10 @@ class Type {
 
 	public boolean isInteger() {
 		return id.equals(INTEGER);
+	}
+	
+	public boolean isDouble() {
+		return id.equals(DOUBLE);
 	}
 
 	public boolean isUndefined() {
@@ -214,6 +219,7 @@ class Value extends Expression {
 	public int intValue; // if the type is an int intValue is used otherwise
 	// boolValue is used
 	public boolean boolValue;
+	public double doubValue;
 
 	public Value(int i) {
 		type = new Type(Type.INTEGER);
@@ -223,6 +229,11 @@ class Value extends Expression {
 	public Value(boolean b) {
 		type = new Type(Type.BOOLEAN);
 		boolValue = b;
+	}
+	
+	public Value(double d) {
+		type = new Type(Type.DOUBLE);
+		doubValue = d;
 	}
 
 	public Value() {
@@ -235,6 +246,8 @@ class Value extends Expression {
 			s = s + intValue;
 		else if (type.isBoolean())
 			s = s + boolValue;
+		else if (type.isDouble())
+			s = s + doubValue;
 		return s;
 	}
 }

@@ -2,8 +2,10 @@ void main() {
 
 	int n, x, y, z;
 	boolean yes, no;
+	double r;
 	
 	n = 12;
+	r = 1.23;
 	yes = true;
 	
 	if(n != 12) {
