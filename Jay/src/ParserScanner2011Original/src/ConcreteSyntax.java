@@ -67,7 +67,8 @@ public class ConcreteSyntax {
 		Declarations ds = new Declarations();
 		while (token.getValue().equals("int")
 				|| token.getValue().equals("boolean")
-				|| token.getValue().equals("double")) {
+				|| token.getValue().equals("double")
+				|| token.getValue().equals("array")) {
 			declaration(ds);
 		}
 		return ds;
@@ -81,9 +82,9 @@ public class ConcreteSyntax {
 	}
 
 	private Type type() {
-		// Type --> int | bool
-		// Add double
+		// Type --> int | bool | double
 		Type t = null;
+		String e = "", f = "";
 		if (token.getValue().equals("int"))
 			t = new Type(token.getValue());
 		else if (token.getValue().equals("boolean"))
@@ -91,8 +92,21 @@ public class ConcreteSyntax {
 		else if (token.getValue().equals("double"))
 			t = new Type(token.getValue());
 		else
-			throw new RuntimeException(SyntaxError("int | boolean"));
+			throw new RuntimeException(SyntaxError("int | boolean | double"));
 		token = input.nextToken(); // pass over the type
+		// Match braces denoting an array
+		if (token.getValue().equals("[")) {
+			match("[");
+			// If the user declares an array with static elements (int[5] arr;)
+			// f is used purely for formatting
+			if (!token.getValue().equals("]")) {
+				e = token.getValue();
+				f = " " + e + " ";
+				token = input.nextToken();
+			}
+			match("]");
+			t = new Type("array(" + f + t.id + "(s))");
+		}
 		return t;
 	}
 
@@ -351,8 +365,11 @@ public class ConcreteSyntax {
 			} else if ('.' == s.charAt(i) && ( point == true || i == 0 )){
 				result = false;
 			}
-			System.out.println("Result: " + result);
 		}
 		return result;
+	}
+	
+	private boolean isArray(String s) {
+		return true;
 	}
 }

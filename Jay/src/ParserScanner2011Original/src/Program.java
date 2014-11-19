@@ -83,6 +83,7 @@ class Type {
 	final static String INTEGER = "int";
 	final static String BOOLEAN = "bool";
 	final static String DOUBLE = "double";
+	final static String ARRAY = "array";
 	final static String UNDEFINED = "undef";
 
 	public Type(String t) {
@@ -99,6 +100,10 @@ class Type {
 	
 	public boolean isDouble() {
 		return id.equals(DOUBLE);
+	}
+	
+	public boolean isArray() {
+		return id.equals(ARRAY);
 	}
 
 	public boolean isUndefined() {

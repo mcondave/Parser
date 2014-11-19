@@ -248,7 +248,7 @@ public class TokenStream {
 	}
  
 	private boolean isSeparator(char c) {
-		return c == '(' || c == ')' || c == '{' || c == '}' || c == ';' || c == ',';
+		return c == '(' || c == ')' || c == '{' || c == '}' || c == ';' || c == ',' || c == '[' || c == ']';
 	}
  
 	private boolean isOperator(char c) {

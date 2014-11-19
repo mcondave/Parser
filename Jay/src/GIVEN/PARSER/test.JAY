@@ -2,7 +2,7 @@ void main() {
 
 	int n, x, y, z;
 	boolean yes, no;
-	double r;
+	double[] r;
 	
 	n = 12;
 	r = 1.23;
@@ -12,6 +12,7 @@ void main() {
 		n = n-1+4*3;
 		x = 14;
 		y = z;
+		r = r + 0.22;
 	} else {
 		n = n*2/2;
 		yes = true;
