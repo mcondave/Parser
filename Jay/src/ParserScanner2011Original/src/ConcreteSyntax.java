@@ -305,6 +305,27 @@ public class ConcreteSyntax {
 			token = input.nextToken();
 			e = expression();
 			match(")");
+		} else if (token.getValue().equals("{")) {
+			// If we see a curly brace in an expression, it's *probably* an array
+			// We should make the expression equal to the whole array
+			// While we don't see the closing brace, we should add the current expression to what is there
+			// If we see a comma, that lets us know there are more expressions to be added
+			// The value of the array will include commas and be represented as such: {val1,val2,...,valn}
+			Value v = null;
+			String arrValue = "{";
+			token = input.nextToken();
+			while (!token.getValue().equals("}")) {
+				arrValue += token.getValue();
+				if (token.getValue().equals(",")) {
+					token = input.nextToken();
+					arrValue += token.getValue();
+				}
+				token = input.nextToken();
+			}
+			arrValue += "}";
+			v = new Value(arrValue);
+			e = v;
+			match("}");
 		} else
 			throw new RuntimeException(SyntaxError("Identifier | Literal | ("));
 		return e;

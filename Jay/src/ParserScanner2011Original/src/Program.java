@@ -217,14 +217,14 @@ class Variable extends Expression {
 }
 
 class Value extends Expression {
-	// Value = int intValue | bool boolValue
+	// Value = int intValue | bool boolValue | double doubValue | String arrValue
 
 	public Type type;
 
-	public int intValue; // if the type is an int intValue is used otherwise
-	// boolValue is used
+	public int intValue;
 	public boolean boolValue;
 	public double doubValue;
+	public String arrValue;
 
 	public Value(int i) {
 		type = new Type(Type.INTEGER);
@@ -244,6 +244,11 @@ class Value extends Expression {
 	public Value() {
 		type = new Type(Type.UNDEFINED);
 	}
+	
+	public Value(String s) {
+		type = new Type(Type.ARRAY);
+		arrValue = s;
+	}
 
 	public String display(int level) {
 		String s = super.display(level);
@@ -253,6 +258,8 @@ class Value extends Expression {
 			s = s + boolValue;
 		else if (type.isDouble())
 			s = s + doubValue;
+		else if (type.isArray())
+			s = s + arrValue;
 		return s;
 	}
 }
