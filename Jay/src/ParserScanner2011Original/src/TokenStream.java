@@ -224,7 +224,7 @@ public class TokenStream {
  
 	private boolean isKeyword(String s) {	
 		return s.equals("main") || s.equals("void") || s.equals("while") || s.equals("boolean") ||
-				s.equals("int") || s.equals("if") || s.equals("else");
+				s.equals("int") || s.equals("if") || s.equals("else") || s.equals("function") || s.equals("return");
 	}
 	
 	private boolean isFunction(String s) {

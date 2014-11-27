@@ -1,11 +1,8 @@
 void main() {
 
-	function int rar(int x) {
-		x = x + 3;
-	}
-	
-	function void test(int i, double d, boolean b) {
-		i = i + 1;
+	function void test(int i, int j, boolean f, double x) {
+		x = x + i/j;
+		return x+1;
 	}
 
 	int n, x, y, z;

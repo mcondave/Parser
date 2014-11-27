@@ -215,6 +215,9 @@ public class ConcreteSyntax {
 			s = whileStatement();
 		} else if (token.getType().equals("Identifier")) { // Assignment
 			s = assignment();
+		} else if (token.getValue().equals("return")) {
+			token = input.nextToken();
+			s = funcReturn();
 		} else
 			throw new RuntimeException(SyntaxError("Statement"));
 		return s;
@@ -227,6 +230,12 @@ public class ConcreteSyntax {
 			b.blockmembers.addElement(statement());
 		}
 		return b;
+	}
+	
+	private Statement funcReturn() {
+		returnStatement r = new returnStatement();
+		r.e = expression();
+		return r;
 	}
 
 	private Assignment assignment() {
