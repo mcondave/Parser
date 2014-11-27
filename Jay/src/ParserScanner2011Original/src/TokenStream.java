@@ -226,6 +226,10 @@ public class TokenStream {
 		return s.equals("main") || s.equals("void") || s.equals("while") || s.equals("boolean") ||
 				s.equals("int") || s.equals("if") || s.equals("else");
 	}
+	
+	private boolean isFunction(String s) {
+		return s.equals("sqrt") || s.equals("exp");
+	}
  
 	private boolean isWhiteSpace(char c) {
 		return (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\f');

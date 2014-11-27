@@ -12,8 +12,9 @@ package ParserScanner2011Original.src;
 import java.util.Vector;
 
 public class Program {
-	// Program = Declarations decpart ; Block body
+	// Program = Definitions funcDefn; Declarations decpart ; Block body
 
+	public Definitions funcDefn;
 	public Declarations decpart;
 	public Block body;
 
@@ -21,10 +22,11 @@ public class Program {
 		int level = 0;
 		Indenter indent = new Indenter(level);
 		String s = indent.display("Abstract syntax of the JAY 2006 Program: ");
+		String def = funcDefn.display(level + 1);
 		String dec = decpart.display(level + 1);
 		String bod = body.display(level + 1);
 		String nl = "\n";
-		return s + dec + bod + nl;
+		return s + def + dec + bod + nl;
 	}
 }
 
@@ -46,6 +48,74 @@ class Indenter {
 		return nl + tab + message;
 	}
 }
+
+class Definitions extends Vector {
+	// Definitions = Definition *
+	//					(a Vector of definitions def1, def2, ..., defn)
+	public String display(int level) {
+		Indenter indent = new Indenter(level);
+		String s = indent.display(getClass().toString().substring(6) + ": ");
+		String s1 = indent.display("  Definitions = {\n");
+		String s2 = "";
+		for (int i = 0; i < size(); i++) {
+			s2 = s2 + ((Definition) elementAt(i)).display(level + 1);
+			if (i < size() - 1)
+				s2 = s2 + ",\n ";
+		}
+		return s + s1 + s2 + "}";
+	}
+}
+
+class Definition {
+	// Definition = returnType r; String id; Params p; Statement b;
+	public String id;
+	public returnType r;
+	public Parameters p;
+	public Block b;
+	
+	public String display(int level) {
+		Indenter indent = new Indenter(level + 1);
+		String s = indent.display("");
+		return s + "function " + r.id + " " + id + "(" + p.display(level) + ") {" + b.display(level + 2) + "\n" + s + "}";
+	}
+}
+
+class returnType {
+	// returnType = int | bool | double | void
+
+		public String id;
+
+		final static String INTEGER = "int";
+		final static String BOOLEAN = "bool";
+		final static String DOUBLE = "double";
+		final static String ARRAY = "array";
+		final static String VOID = "void";
+
+		public returnType(String r) {
+			id = r;
+		}
+
+		public boolean isBoolean() {
+			return id.equals(BOOLEAN);
+		}
+
+		public boolean isInteger() {
+			return id.equals(INTEGER);
+		}
+		
+		public boolean isDouble() {
+			return id.equals(DOUBLE);
+		}
+		
+		public boolean isArray() {
+			return id.equals(ARRAY);
+		}
+
+		public boolean isVoid() {
+			return id.equals(VOID);
+		}
+}
+
 class Declarations extends Vector {
 	// Declarations = Declaration *
 	//				  (a Vector of Declarations d1, d2, ..., dn)
@@ -64,12 +134,42 @@ class Declarations extends Vector {
 	}
 }
 
+class Parameters extends Vector {
+	// Parameters = Parameter *
+	//				(a Vector of Parameters p1, p2, ..., pn)
+	
+	public String display(int level) {
+		Indenter indent = new Indenter(level);
+		String s1 = "Parameters = {";
+		String s2 = "";
+		System.out.println("Length of vector: " + size());
+		for (int i = 0; i < size(); i++) {
+			s2 = s2 + ((Parameter) elementAt(i)).display();
+			if (i < size() - 1)
+				s2 = s2 + ", ";
+		}
+		return s1 + s2 + "}";
+	}
+}
+
 class Declaration {
 	// Declaration = Variable v; Type t
+	// 
 
 	public Variable v;
 	public Type t;
 
+	public String display() {
+		return "<" + v.id + ", " + t.id + ">";
+	}
+}
+
+class Parameter {
+	// Parameter = Variable v; Type t
+	
+	public Variable v;
+	public Type t;
+	
 	public String display() {
 		return "<" + v.id + ", " + t.id + ">";
 	}

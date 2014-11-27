@@ -1,5 +1,13 @@
 void main() {
 
+	function int rar(int x) {
+		x = x + 3;
+	}
+	
+	function void test(int i, double d, boolean b) {
+		i = i + 1;
+	}
+
 	int n, x, y, z;
 	boolean yes, no;
 	double[] r;
@@ -17,5 +25,7 @@ void main() {
 		yes = true;
 		no = !yes;
 	}
+	
+	//sqrt(15);
 
 }

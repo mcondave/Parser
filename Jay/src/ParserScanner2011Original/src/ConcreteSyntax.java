@@ -54,10 +54,19 @@ public class ConcreteSyntax {
 			match(header[i]);
 		}
 		match("{");
+		p.funcDefn = definitions();
 		p.decpart = declarations();
 		p.body = statements();
 		match("}");
 		return p;
+	}
+	
+	private Definitions definitions() {
+		Definitions ds = new Definitions();
+		while ( token.getValue().equals("function") ) {
+			definition(ds);
+		}
+		return ds;
 	}
 
 	// Set token.equals(double)
@@ -73,12 +82,66 @@ public class ConcreteSyntax {
 		}
 		return ds;
 	}
+	
+	private void definition(Definitions ds) {
+		// Definitions --> returnType Id (Parameters) {Statements}
+		//returnType r = returntype();
+		Definition d = new Definition();
+		token = input.nextToken();
+		if (token.getValue().equals("int")
+				|| token.getValue().equals("boolean")
+				|| token.getValue().equals("double")
+				|| token.getValue().equals("array")
+				|| token.getValue().equals("void") ) {
+			d.r = new returnType(token.getValue());
+			token = input.nextToken();
+		} else {
+			throw new RuntimeException(SyntaxError("Invalid return type"));
+		}
+		d.id = token.getValue();
+		token = input.nextToken();
+		match("(");
+		d.p = parameters();
+		match(")");
+		match("{");
+		d.b = statements();
+		match("}");
+		ds.addElement(d);
+	}
 
 	private void declaration(Declarations ds) {
 		// Declaration --> Type Identifiers ;
 		Type t = type();
 		identifiers(ds, t);
 		match(";");
+	}
+	
+	private Parameters parameters() {
+		Parameters ps = new Parameters();
+		while ( !token.getValue().equals(")") ) {
+			parameter(ps);
+		}
+		return ps;
+	}
+	
+	private void parameter(Parameters ps) {
+		// Parameter ---> Type Identifier;
+		Parameter p = new Parameter();
+		p.t = type();
+		p.v = new Variable();
+		if (token.getType().equals("Identifier") ) {
+			p.v.id = token.getValue();
+			ps.addElement(p);
+			token = input.nextToken();
+			if ( token.getValue().equals(",") )
+				token = input.nextToken();
+			else if ( token.getValue().equals(")") )
+				return;
+			else
+				throw new RuntimeException("Expecting \",\" - saw " + token.getType());
+		} else {
+			throw new RuntimeException("Expecting Identifier - saw " + token.getType());
+		}
 	}
 
 	private Type type() {
