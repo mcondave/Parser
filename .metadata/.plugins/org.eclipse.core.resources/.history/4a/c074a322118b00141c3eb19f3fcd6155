@@ -1,0 +1,28 @@
+void main() {
+
+	function void testFunction(int i, int j, boolean f, double x) {
+		x = x + i/j;
+		return x+1;
+	}
+
+	int n, x, y, z;
+	boolean yes, no;
+	double[] r;
+	
+	n = 12;
+	r = {0.22, 1.32, 5.0};
+	yes = true;
+	
+	if(n != 12) {
+		n = n-1+4*3;
+		x = 14;
+		y = z;
+	} else {
+		n = n*2/2;
+		yes = true;
+		no = !yes;
+	}
+	
+	//sqrt(15);
+
+}

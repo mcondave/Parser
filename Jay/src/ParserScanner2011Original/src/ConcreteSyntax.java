@@ -23,6 +23,8 @@ public class ConcreteSyntax {
 		input = ts; // as a TokenStream, and
 		token = input.nextToken(); // retrieve its first Token
 	}
+	
+	public Functions funcList = new Functions();
 
 	// Method that prints a syntax error message
 	private String SyntaxError(String tok) {
@@ -55,6 +57,7 @@ public class ConcreteSyntax {
 		}
 		match("{");
 		p.funcDefn = definitions();
+		p.funcList = functions();
 		p.decpart = declarations();
 		p.body = statements();
 		match("}");
@@ -67,6 +70,10 @@ public class ConcreteSyntax {
 			definition(ds);
 		}
 		return ds;
+	}
+	
+	private Functions functions() {
+		return funcList;
 	}
 
 	// Set token.equals(double)
@@ -99,6 +106,7 @@ public class ConcreteSyntax {
 			throw new RuntimeException(SyntaxError("Invalid return type"));
 		}
 		d.id = token.getValue();
+		funcList.addElement(d.id);
 		token = input.nextToken();
 		match("(");
 		d.p = parameters();
@@ -124,6 +132,14 @@ public class ConcreteSyntax {
 		return ps;
 	}
 	
+	private initParameters initParameters() {
+		initParameters ip = new initParameters();
+		while ( !token.getValue().equals(")") ) {
+			initParameter(ip);
+		}
+		return ip;
+	}
+	
 	private void parameter(Parameters ps) {
 		// Parameter ---> Type Identifier;
 		Parameter p = new Parameter();
@@ -142,6 +158,19 @@ public class ConcreteSyntax {
 		} else {
 			throw new RuntimeException("Expecting Identifier - saw " + token.getType());
 		}
+	}
+	
+	private void initParameter(initParameters is) {
+		initParameter i = new initParameter();
+		i.v = new Value(token.getValue());
+		is.addElement(i);
+		token=input.nextToken();
+		if ( token.getValue().equals(",") )
+			token = input.nextToken();
+		else if ( token.getValue().equals(")") )
+			return;
+		else
+			throw new RuntimeException("Expecting \",\" - saw " + token.getType());
 	}
 
 	private Type type() {
@@ -214,7 +243,11 @@ public class ConcreteSyntax {
 			// WhileStatement
 			s = whileStatement();
 		} else if (token.getType().equals("Identifier")) { // Assignment
-			s = assignment();
+			if(isDefinedFunction(token.getValue())) {
+				s = functionCall();
+			} else {
+				s = assignment();
+			}
 		} else if (token.getValue().equals("return")) {
 			token = input.nextToken();
 			s = funcReturn();
@@ -236,6 +269,18 @@ public class ConcreteSyntax {
 		returnStatement r = new returnStatement();
 		r.e = expression();
 		return r;
+	}
+	
+	private functionCall functionCall() {
+		// Gets the id of the function currently being called then matches opening and closing parentheses
+		functionCall f = new functionCall();
+		initParameters ip = new initParameters();
+		f.id = token.getValue();
+		token = input.nextToken();
+		match("(");
+		f.ip = initParameters();
+		match(")");
+		return f;
 	}
 
 	private Assignment assignment() {
@@ -432,6 +477,18 @@ public class ConcreteSyntax {
 		//Statement
 		l.body = statement();
 		return l;
+	}
+	
+	private boolean isDefinedFunction(String id) {
+		// Walk through vector
+		// exists(function) ? true : false
+		Functions funcs = funcList;
+		for (int i = 0; i < funcs.size(); i++) {
+			if(id.equals(funcs.elementAt(i))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean isInteger(String s) {

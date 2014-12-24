@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Keyword" key="selection"/>
+		<item value="returnStat" key="selection"/>
 		<list key="findhistory">
-			<item value="keyword"/>
+			<item value="returnstat"/>
+			<item value="return"/>
+			<item value="add"/>
+			<item value="addn"/>
 			<item value="definitions"/>
-			<item value="current token"/>
-			<item value="Keyword"/>
-			<item value="key"/>
-			<item value="match"/>
-			<item value="tokenstream"/>
-			<item value="next"/>
+			<item value="parameters"/>
+			<item value="paramet"/>
+			<item value="param"/>
 		</list>
 		<list key="replacehistory">
 		</list>

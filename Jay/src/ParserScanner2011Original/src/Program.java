@@ -12,9 +12,10 @@ package ParserScanner2011Original.src;
 import java.util.Vector;
 
 public class Program {
-	// Program = Definitions funcDefn; Declarations decpart ; Block body
+	// Program = Definitions funcDefn; Functions funcList; Declarations decpart ; Block body
 
 	public Definitions funcDefn;
+	public Functions funcList;
 	public Declarations decpart;
 	public Block body;
 
@@ -23,6 +24,7 @@ public class Program {
 		Indenter indent = new Indenter(level);
 		String s = indent.display("Abstract syntax of the JAY 2006 Program: ");
 		String def = funcDefn.display(level + 1);
+		String fun = funcList.display(level);
 		String dec = decpart.display(level + 1);
 		String bod = body.display(level + 1);
 		String nl = "\n";
@@ -49,6 +51,29 @@ class Indenter {
 	}
 }
 
+class Functions extends Vector {
+	// Stores the name of each defined function
+	
+	public String display(int level) {
+		Indenter indent = new Indenter(level);
+		String s = indent.display(getClass().toString().substring(6) + ": ");
+		String s1;
+		if (size() > 0)
+			s1 = indent.display("  Functions = {");
+		else
+			s1 = "";
+		String s2 = "";
+		for (int i = 0; i < size(); i++) {
+			s2 = s2 + elementAt(i);
+			if (i < size() - 1)
+				s2 = s2 + ", ";
+		}
+		s2 = s2 + "}";
+		System.out.println(s + s1 + s2);
+		return s + s1 + s2;
+	}
+}
+
 class Definitions extends Vector {
 	// Definitions = Definition *
 	//					(a Vector of definitions def1, def2, ..., defn)
@@ -57,16 +82,19 @@ class Definitions extends Vector {
 		String s = indent.display(getClass().toString().substring(6) + ": ");
 		String s1;
 		if (size() > 0)
-			s1 = indent.display("  Definitions = {\n");
+			s1 = indent.display("  Definitions = {");
 		else
 			s1 = "";
 		String s2 = "";
 		for (int i = 0; i < size(); i++) {
 			s2 = s2 + ((Definition) elementAt(i)).display(level + 1);
-			if (i < size() - 1)
+			if (i < size() - 1) {
 				s2 = s2 + ",\n ";
+			}
 		}
-		return s + s1 + s2;
+		String s3;
+		s3 = indent.display(" }");
+		return s + s1 + s2 + s3;
 	}
 }
 
@@ -146,9 +174,26 @@ class Parameters extends Vector {
 		Indenter indent = new Indenter(level);
 		String s1 = "Parameters = {";
 		String s2 = "";
-		System.out.println("Length of vector: " + size());
 		for (int i = 0; i < size(); i++) {
 			s2 = s2 + ((Parameter) elementAt(i)).display();
+			if (i < size() - 1)
+				s2 = s2 + ", ";
+		}
+		return s1 + s2 + "}";
+	}
+}
+
+class initParameters extends Vector {
+	// Parameters = Parameter *
+	//				(a Vector of Parameters p1, p2, ..., pn)
+	
+	public String display(int level) {
+		Indenter indent = new Indenter(level);
+		String s1 = " Initialized Parameters = {";
+		String s2 = "";
+		for (int i = 0; i < size(); i++) {
+
+			s2 = s2 + ((initParameter) elementAt(i)).display();
 			if (i < size() - 1)
 				s2 = s2 + ", ";
 		}
@@ -176,6 +221,16 @@ class Parameter {
 	
 	public String display() {
 		return "<" + v.id + ", " + t.id + ">";
+	}
+}
+
+class initParameter {
+	// initParemeter = Value v
+	// The value the paremeter is initialized to during function call
+	public Value v;
+	
+	public String display() {
+		return "<" + v.getValue() + ">";
 	}
 }
 
@@ -301,6 +356,19 @@ class returnStatement extends Statement {
 	}
 }
 
+class functionCall extends Statement {
+	public String id;
+	public initParameters ip;
+	
+	public String display(int level) {
+		Indenter indent = new Indenter(level);
+		String s = super.display(level);
+		String s1 = indent.display(ip.display(level + 1));
+		return s + id + s1;
+	}
+}
+
+
 class Expression {
 	// Expression = Variable | Value | Binary | Unary
 
@@ -362,6 +430,19 @@ class Value extends Expression {
 	public Value(String s) {
 		type = new Type(Type.ARRAY);
 		arrValue = s;
+	}
+	
+	public Object getValue() {
+		if (type.isInteger())
+			return intValue;
+		else if (type.isBoolean())
+			return boolValue;
+		else if (type.isDouble())
+			return doubValue;
+		else if (type.isArray())
+			return arrValue;
+		else
+			return "undef";
 	}
 
 	public String display(int level) {
